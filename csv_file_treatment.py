@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+np.seterr(divide='ignore', invalid='ignore')
+
 def read_csv(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
     return df
