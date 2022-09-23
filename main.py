@@ -19,7 +19,7 @@ if __name__ == '__main__':
     file_name, columns_range = get_attributes()
     try:
         idh_df = csv.read_csv(get_abspath(file_name))
-        idh_df = csv.select_range_rows(idh_df, columns_range, '..')
+        idh_df = csv.select_range_columns(idh_df, columns_range, '..')
         idh_df = csv.values_treatment(idh_df, columns_range)
         matriz_transicao = csv.get_count_class(idh_df, columns_range)
         #print(idh_df)
