@@ -1,6 +1,7 @@
 import csv_file_treatment as csv
 import os
 import sys
+import equacoesCK as eck
 
 
 def get_abspath(file_name: str) -> str:
@@ -19,9 +20,14 @@ if __name__ == '__main__':
     file_name, columns_range = get_attributes()
     try:
         idh_df = csv.read_csv(get_abspath(file_name))
+        idh_df2 = csv.read_csv(get_abspath(file_name))
         idh_df = csv.select_range_columns(idh_df, columns_range, '..')
+        idh_df2 = csv.select_starting_year(idh_df2, '1990', '..')
         idh_df = csv.values_treatment(idh_df, columns_range)
+        idh_df2 = csv.values_treatment_formula(idh_df2, '1990')
         matriz_transicao = csv.get_count_class(idh_df, columns_range)
+        matriz_transicao2 = csv.class_count_starting_year(idh_df2)
+        matriz_transicao = eck.ten_years_step(matriz_transicao,matriz_transicao2)
         #print(idh_df)
         print(f'Matriz de Transição:\n{matriz_transicao}')
     except FileNotFoundError as e:
