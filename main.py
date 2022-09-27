@@ -18,18 +18,26 @@ def get_attributes() -> tuple:
 
 if __name__ == '__main__':
     file_name, columns_range = get_attributes()
+    select_year = '2004'
+    result_year = str(int(select_year) + 10)
     try:
         idh_df = csv.read_csv(get_abspath(file_name))
-        idh_df2 = csv.read_csv(get_abspath(file_name))
         idh_df = csv.select_range_columns(idh_df, columns_range, '..')
-        idh_df2 = csv.select_starting_year(idh_df2, '1990', '..')
         idh_df = csv.values_treatment(idh_df, columns_range)
-        idh_df2 = csv.values_treatment_formula(idh_df2, '1990')
-        matriz_transicao = csv.get_count_class(idh_df, columns_range)
-        matriz_transicao2 = csv.class_count_starting_year(idh_df2)
-        matriz_transicao = eck.ten_years_step(matriz_transicao,matriz_transicao2)
-        #print(idh_df)
+        idh_df_select = csv.read_csv(get_abspath(file_name))
+        idh_df_select = csv.select_starting_year(idh_df_select, select_year, '..')
+        idh_df_select = csv.values_treatment_formula(idh_df_select, select_year)   
+        idh_df_result = csv.read_csv(get_abspath(file_name))
+        idh_df_result = csv.select_starting_year(idh_df_result, result_year, '..')
+        idh_df_result = csv.values_treatment_formula(idh_df_result, result_year)  
+        matriz_transicao = csv.get_count_class(idh_df, columns_range) 
+        matriz_resultado = csv.class_count_starting_year(idh_df_select)
+        result_count = csv.class_count_starting_year(idh_df_result)
+        matriz_resultado = eck.ten_years_step(matriz_transicao, matriz_resultado)
         print(f'Matriz de Transição:\n{matriz_transicao}')
+        print(f'Distribuição das classificações do ano de {select_year}:\n{matriz_resultado[0]}')
+        print(f'Previsão para {result_year}:\n{matriz_resultado[1]}')
+        print(f'Valores reais do ano de {result_year}:\n{result_count[0]}')
     except FileNotFoundError as e:
         print(f'Arquivo "{file_name}" não encontrado')
     except BaseException as e:

@@ -16,6 +16,7 @@ def select_range_columns(df: pd.DataFrame, columns: list, pattern: str) -> tuple
     result = result.astype({start_column: float, end_column: float})
     return result[[start_column, end_column]]
 
+
 def select_starting_year(df: pd.DataFrame, column: str, pattern: str) -> tuple:
     result = df.drop(df[(df[column] == pattern)].index)
     result = result.reset_index()
@@ -31,6 +32,7 @@ def values_treatment(df: pd.DataFrame, columns: list) -> pd.DataFrame:
         df.loc[df[column] < 0.55, column] = 0
     result = df.astype({str(columns[0]): int, str(columns[1]): int})
     return result
+
 
 def values_treatment_formula(df: pd.DataFrame, column: str) -> pd.DataFrame:
     df.loc[(df[column] >= 0.8), column] = 3
@@ -48,6 +50,7 @@ def get_count_class(df: pd.DataFrame, columns: list) -> np.ndarray:
     matriz = (matriz / matriz.sum(axis=1)[:,None])
     matriz[np.isnan(matriz)] = 0
     return matriz
+
 
 def class_count_starting_year(df: pd.DataFrame) -> np.ndarray:
     matriz = np.zeros((2, 4))
